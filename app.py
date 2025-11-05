@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import json
 
-# URL deines n8n Webhook-Triggers (den bekommst du aus n8n)
+# URL deines n8n Webhook-Triggers
 N8N_WEBHOOK_URL = "https://n8n.srv1040466.hstgr.cloud/webhook-test/ee1cd20d-0adb-4df8-90a1-5e0032fb0719"
 
 # --- Seiten-Konfiguration ---
@@ -12,9 +12,14 @@ st.set_page_config(page_title="Agentic Workflow Demo", layout="centered")
 st.title("Willkommen beim Agentic Workflow! 🚀")
 st.markdown("Werden Sie Teil einer Live-Demo und erhalten Sie im Anschluss personalisierte Informationen direkt von unserem Team.")
 
-# WICHTIG: Das Bild wird nun von einer URL geladen, um den "FileNotFoundError" zu vermeiden.
-# Laden Sie Ihr GIF z.B. bei https://imgur.com/upload hoch und ersetzen Sie den Link.
-st.image("https://i.imgur.com/aQzaR2G.gif", caption="Dieser Prozess läuft gleich im Hintergrund für Sie ab.")
+# Dieser Befehl funktioniert, weil die GIF-Datei jetzt mit im GitHub-Repository liegt.
+# Streamlit sucht die Datei im selben Verzeichnis wie die app.py.
+try:
+    st.image("workflow_animation.gif", caption="Dieser Prozess läuft gleich im Hintergrund für Sie ab.")
+except Exception as e:
+    # Falls die Datei aus irgendeinem Grund doch nicht gefunden wird, zeigen wir eine Warnung an, statt dass die App abstürzt.
+    st.warning("Info: Workflow-Animation konnte nicht geladen werden.")
+
 
 st.markdown("---")
 
