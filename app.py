@@ -3,7 +3,7 @@ import requests
 import json
 
 # URL deines n8n Webhook-Triggers
-N8N_WEBHOOK_URL = "https://n8n.srv1040466.hstgr.cloud/webhook/ee1cd20d-0adb-4df8-90a1-5e0032fb0719"
+N8N_WEBHOOK_URL = "https://n8n.srv1040466.hstgr.cloud/webhook-test/ee1cd20d-0adb-4df8-90a1-5e0032fb0719"
 
 # --- Seiten-Konfiguration ---
 st.set_page_config(page_title="KI-Workflow Live-Demo", layout="centered")
