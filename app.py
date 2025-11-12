@@ -19,7 +19,7 @@ Diese App zeigt Ihnen zwei Beispiele: den perfekten Gesprächseinstieg und das a
 
 try:
     # Die Animation visualisiert, was im Hintergrund passiert, sobald Sie die Informationen absenden.
-    st.image("workflow_animation.gif", caption="Die Animationen visualisieren, was im Hintergrund passiert, sobald Sie die Informationen absenden.")
+    st.image("Video-Workflow2.gif", caption="Die Animationen visualisieren, was im Hintergrund passiert, sobald Sie die Informationen absenden.")
 except Exception as e:
     st.warning("Info: Workflow-Animation konnte nicht geladen werden.")
 
