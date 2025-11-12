@@ -11,27 +11,44 @@ st.set_page_config(page_title="KI-Workflow Live-Demo", layout="centered")
 # --- Seiten-Inhalt ---
 st.title("Willkommen zur Live-Demo! 🚀")
 
-# Angepasster Einleitungstext gemäß Variante 1
 st.markdown("""
 Erleben Sie, wie wir KI-Workflows nutzen, um unseren Messealltag zu vereinfachen.
-Diese App zeigt Ihnen zwei Beispiele: den perfekten Gesprächseinstieg und das automatisierte Follow-up.
+Die Videos zeigen Ihnen zwei Beispiele: den perfekten Gesprächseinstieg und das automatisierte Follow-up.
 """)
 
-try:
-    # Die Animation visualisiert, was im Hintergrund passiert, sobald Sie die Informationen absenden.
-    st.image("Video-Workflow2.gif", caption="Die Animationen visualisieren, was im Hintergrund passiert, sobald Sie die Informationen absenden.")
-except Exception as e:
-    st.warning("Info: Workflow-Animation konnte nicht geladen werden.")
+# --- Zwei Spalten für die Videos erstellen ---
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("##### Workflow 1: Der KI-Eisbrecher")
+    try:
+        # Video für den ersten Workflow einbinden
+        st.video("workflow1_animation.mp4")
+        # NEU: Kurzbeschreibung unter dem Video
+        st.caption("Basierend auf Ihren Eingaben im Formular unten erhält unser Team einen KI-generierten Vorschlag für den perfekten Gesprächseinstieg.")
+    except Exception as e:
+        st.warning("Info: Video für Workflow 1 konnte nicht geladen werden.")
+
+with col2:
+    st.markdown("##### Workflow 2: Das smarte Follow-up")
+    try:
+        # Video für den zweiten Workflow einbinden
+        st.video("workflow2_animation.mp4")
+        # NEU: Kurzbeschreibung unter dem Video
+        st.caption("Nach unserem Gespräch genügt eine Sprachnotiz: Die KI formuliert eine E-Mail, hängt die richtigen Flyer an und legt alles versandfertig in den Entwürfen ab.")
+    except Exception as e:
+        st.warning("Info: Video für Workflow 2 konnte nicht geladen werden.")
+
 
 st.markdown("---")
 
 
 # --- Beschreibung und Eingabemaske für Workflow 1 ---
-st.subheader("Workflow 1: Der KI-Eisbrecher")
-st.markdown("Geben Sie unten drei Stichworte zu Ihren Interessen ein. Unsere KI generiert daraus live einen personalisierten Gesprächsöffner für uns.")
+st.subheader("Starten Sie den KI-Eisbrecher")
+st.markdown("Geben Sie unten Ihre Daten ein, um live einen personalisierten Gesprächsöffner für uns zu generieren.")
 
-# Datenschutz-Hinweis, der den Aspekt der Anonymisierung verantwortungsvoll aufgreift
-st.info("✨ **Das Besondere:** Ihre Eingaben werden vollständig DSGVO-konform verarbeitet. Obwohl wir die Technologie führender KI-Anbieter nutzen, ist Ihre Privatsphäre geschützt.")
+# Datenschutz-Hinweis
+st.info("✨ **Ihre Daten sind sicher:** Alle Eingaben werden DSGVO-konform und nur für den Zweck dieser Demo verarbeitet.")
 
 with st.form("contact_form"):
     
@@ -67,7 +84,7 @@ with st.form("contact_form"):
                     "firstName": first_name,
                     "competenceLevel": competence_level,
                     "useCase": use_case,
-                    "email": email  # Variable und Key angepasst an "email"
+                    "email": email
                 }
                 response = requests.post(
                     N8N_WEBHOOK_URL,
@@ -87,16 +104,3 @@ with st.form("contact_form"):
                 st.error(f"Verbindungsfehler zum Automatisierungs-Server: {e}")
         else:
             st.warning("Bitte füllen Sie alle Pflichtfelder (*) aus.")
-
-st.markdown("---")
-
-# --- Beschreibung für Workflow 2 ---
-st.subheader("Workflow 2: Das smarte Follow-up")
-st.markdown("""
-Nach unserem Gespräch reicht eine kurze Sprachnotiz als Zusammenfassung. Die KI erledigt den Rest:
-*   Formuliert eine professionelle Follow-up-E-Mail.
-*   Lädt automatisch zwei relevante Flyer herunter und fügt sie als Anhang hinzu.
-*   Legt die fertige E-Mail im richtigen Entwurfsordner ab – bereit zum Senden.
-
-**Sprechen Sie uns an, wir zeigen es Ihnen gerne live!**
-""")
