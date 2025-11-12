@@ -11,34 +11,32 @@ st.set_page_config(page_title="KI-Workflow Live-Demo", layout="centered")
 # --- Seiten-Inhalt ---
 st.title("Willkommen zur Live-Demo! 🚀")
 
+# Angepasster Einleitungstext gemäß Variante 1
 st.markdown("""
-Erleben Sie, wie wir KI-Workflows nutzen, um unseren Messealltag zu vereinfachen. 
-Diese App startet unseren **ersten Workflow: den perfekten Gesprächseinstieg**.
-
-Im Anschluss an unser Gespräch zeigen wir Ihnen gerne den **zweiten Workflow: das smarte Follow-up**, bei dem eine KI basierend auf einer kurzen Sprachnotiz eine komplette E-Mail mit den passenden Flyern für Sie vorbereitet.
+Erleben Sie, wie wir KI-Workflows nutzen, um unseren Messealltag zu vereinfachen.
+Diese App zeigt Ihnen zwei Beispiele: den perfekten Gesprächseinstieg und das automatisierte Follow-up.
 """)
 
 try:
     # Die Animation visualisiert, was im Hintergrund passiert, sobald Sie die Informationen absenden.
-    st.image("workflow_animation.gif", caption="Dieser Prozess läuft gleich im Hintergrund für Sie ab.")
+    st.image("workflow_animation.gif", caption="Die Animationen visualisieren, was im Hintergrund passiert, sobald Sie die Informationen absenden.")
 except Exception as e:
     st.warning("Info: Workflow-Animation konnte nicht geladen werden.")
 
 st.markdown("---")
 
-# --- Eingabemaske für Workflow 1 ---
-st.subheader("Starten Sie den ersten Workflow: Der KI-Eisbrecher")
+
+# --- Beschreibung und Eingabemaske für Workflow 1 ---
+st.subheader("Workflow 1: Der KI-Eisbrecher")
 st.markdown("Geben Sie unten drei Stichworte zu Ihren Interessen ein. Unsere KI generiert daraus live einen personalisierten Gesprächsöffner für uns.")
 
-# Datenschutz-Hinweis
-st.info("✨ **Ihre Daten sind sicher:** Alle Eingaben werden DSGVO-konform und nur für den Zweck dieser Demo verarbeitet.")
-
+# Datenschutz-Hinweis, der den Aspekt der Anonymisierung verantwortungsvoll aufgreift
+st.info("✨ **Das Besondere:** Ihre Eingaben werden vollständig DSGVO-konform verarbeitet. Obwohl wir die Technologie führender KI-Anbieter nutzen, ist Ihre Privatsphäre geschützt.")
 
 with st.form("contact_form"):
-    # Eingabefeld für den Vornamen
+    
     first_name = st.text_input("Ihr Vorname*")
     
-    # Schieberegler für die Kompetenzeinschätzung
     competence_level = st.slider(
         "Wie schätzen Sie Ihre aktuelle Kompetenz zu 'Agentic Workflows' ein?*",
         min_value=1,
@@ -47,13 +45,12 @@ with st.form("contact_form"):
         help="1 = 'Noch nie gehört', 10 = 'Ich baue sie täglich'"
     )
     
-    # Optionales Textfeld für den Use-Case
     use_case = st.text_area(
         "Welchen Anwendungsfall würden Sie gerne automatisieren? (Optional)",
         placeholder="z.B. Kundensupport-Anfragen vorsortieren, Rechnungen automatisch verarbeiten, Social-Media-Posts erstellen..."
     )
     
-    # E-Mail-Feld (verpflichtend, ohne Telefonnummer)
+    # E-Mail-Feld als einziges, verpflichtendes Kontaktfeld
     email = st.text_input(
         "Ihre E-Mail-Adresse*",
         placeholder="name@beispiel.de"
@@ -70,7 +67,7 @@ with st.form("contact_form"):
                     "firstName": first_name,
                     "competenceLevel": competence_level,
                     "useCase": use_case,
-                    "email": email  # Variable und Key angepasst
+                    "email": email  # Variable und Key angepasst an "email"
                 }
                 response = requests.post(
                     N8N_WEBHOOK_URL,
@@ -80,7 +77,7 @@ with st.form("contact_form"):
                 
                 # Prüfen, ob der Request erfolgreich war
                 if response.status_code == 200:
-                    st.success(f"Großartig, {first_name}! Der Workflow wurde gestartet. Sprechen Sie mich gerne direkt an – ich habe bereits alle Infos für einen perfekten Start.")
+                    st.success(f"Großartig, {first_name}! Der Workflow wurde gestartet. Sprechen Sie mich gerne direkt an – ich habe bereits alle Infos.")
                     st.balloons()
                 else:
                     st.error("Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.")
@@ -90,3 +87,16 @@ with st.form("contact_form"):
                 st.error(f"Verbindungsfehler zum Automatisierungs-Server: {e}")
         else:
             st.warning("Bitte füllen Sie alle Pflichtfelder (*) aus.")
+
+st.markdown("---")
+
+# --- Beschreibung für Workflow 2 ---
+st.subheader("Workflow 2: Das smarte Follow-up")
+st.markdown("""
+Nach unserem Gespräch reicht eine kurze Sprachnotiz als Zusammenfassung. Die KI erledigt den Rest:
+*   Formuliert eine professionelle Follow-up-E-Mail.
+*   Lädt automatisch zwei relevante Flyer herunter und fügt sie als Anhang hinzu.
+*   Legt die fertige E-Mail im richtigen Entwurfsordner ab – bereit zum Senden.
+
+**Sprechen Sie uns an, wir zeigen es Ihnen gerne live!**
+""")
