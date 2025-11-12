@@ -97,7 +97,7 @@ with st.form("contact_form"):
                     timer_placeholder = st.empty()
                     
                     # 2. Schleife, die von 30 bis 0 herunterzählt
-                    for seconds in range(30, -1, -1):
+                    for seconds in range(45, -1, -1):
                         # 3. Nachricht formatieren und im Platzhalter anzeigen
                         message = f"Ein Mitarbeiter sollte sich in ca. **{seconds} Sekunden** bei Ihnen melden, um das Ergebnis und den zweiten Workflow zu zeigen."
                         timer_placeholder.info(message)
