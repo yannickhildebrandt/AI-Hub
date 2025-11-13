@@ -1,10 +1,27 @@
 import streamlit as st
 import requests
 import json
-import time # Importieren des time-Moduls
+import time
+import base64 # Neu: Importieren für die Videokodierung
 
 # URL deines n8n Webhook-Triggers
 N8N_WEBHOOK_URL = "https://n8n.srv1040466.hstgr.cloud/webhook/ee1cd20d-0adb-4df8-90a1-5e0032fb0719"
+
+# --- HELFERFUNKTION FÜR AUTOPLAY-VIDEO ---
+# Diese Funktion liest eine Videodatei, kodiert sie und gibt sie als HTML-Video-Element zurück
+def autoplay_video(video_file_path):
+    try:
+        with open(video_file_path, "rb") as f:
+            data = f.read()
+            b64 = base64.b64encode(data).decode()
+            html = f"""
+                <video controls width="100%" autoplay="true" muted="true" loop="true">
+                    <source src="data:video/mp4;base64,{b64}" type="video/mp4">
+                </video>
+                """
+            st.markdown(html, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.warning(f"Info: Videodatei nicht gefunden unter {video_file_path}")
 
 # --- Seiten-Konfiguration ---
 st.set_page_config(page_title="KI-Workflow Live-Demo", layout="centered")
@@ -20,20 +37,15 @@ Die Videos zeigen Ihnen zwei Beispiele: den perfekten Gesprächseinstieg und das
 col1, col2 = st.columns(2)
 with col1:
     st.markdown("##### Workflow 1: Der KI-Eisbrecher")
-    try:
-        # Video für den ersten Workflow einbinden
-        st.video("workflow1_animation.mp4")
-        st.caption("Basierend auf Ihren Eingaben im Formular unten erhält unser Team einen KI-generierten Vorschlag für den perfekten Gesprächseinstieg.")
-    except Exception as e:
-        st.warning("Info: Video für Workflow 1 konnte nicht geladen werden.")
+    # NEU: Aufruf der Helferfunktion statt st.video()
+    autoplay_video("workflow1_animation.mp4")
+    st.caption("Basierend auf Ihren Eingaben im Formular unten erhält unser Team einen KI-generierten Vorschlag für den perfekten Gesprächseinstieg.")
+
 with col2:
     st.markdown("##### Workflow 2: Das smarte Follow-up")
-    try:
-        # Video für den zweiten Workflow einbinden
-        st.video("workflow2_animation.mp4")
-        st.caption("Nach unserem Gespräch genügt eine Sprachnotiz: Die KI formuliert eine E-Mail, hängt die richtigen Flyer an und legt alles versandfertig in den Entwürfen ab.")
-    except Exception as e:
-        st.warning("Info: Video für Workflow 2 konnte nicht geladen werden.")
+    # NEU: Aufruf der Helferfunktion statt st.video()
+    autoplay_video("workflow2_animation.mp4")
+    st.caption("Nach unserem Gespräch genügt eine Sprachnotiz: Die KI formuliert eine E-Mail, hängt die richtigen Flyer an und legt alles versandfertig in den Entwürfen ab.")
 
 st.markdown("---")
 
@@ -88,26 +100,15 @@ with st.form("contact_form"):
                 )
                 
                 if response.status_code == 200:
-                    # Bisherige Erfolgsmeldung bleibt
                     st.success(f"Großartig, {first_name}! Der Workflow wurde gestartet.")
                     st.balloons()
 
-                    # --- NEUER TEIL: COUNTDOWN-TIMER ---
-                    # 1. Einen leeren Platzhalter erstellen
                     timer_placeholder = st.empty()
-                    
-                    # 2. Schleife, die von 30 bis 0 herunterzählt
-                    for seconds in range(45, -1, -1):
-                        # 3. Nachricht formatieren und im Platzhalter anzeigen
+                    for seconds in range(30, -1, -1):
                         message = f"Ein Mitarbeiter sollte sich in ca. **{seconds} Sekunden** bei Ihnen melden, um das Ergebnis und den zweiten Workflow zu zeigen."
                         timer_placeholder.info(message)
-                        
-                        # 4. Eine Sekunde warten
                         time.sleep(1)
-                    
-                    # 5. Finale Nachricht anzeigen, nachdem der Timer abgelaufen ist
                     timer_placeholder.success("Ein Mitarbeiter ist jetzt auf dem Weg zu Ihnen!")
-                    # --- ENDE DES NEUEN TEILS ---
 
                 else:
                     st.error("Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.")
